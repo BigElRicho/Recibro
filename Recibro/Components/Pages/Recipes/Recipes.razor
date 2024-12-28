@@ -1,0 +1,34 @@
+@page "/recipes"
+@using Recibro.Models
+@inject HttpClient Http
+
+<h3>Recipes</h3>
+
+@if (recipes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!recipes.Any())
+{
+    <p>No recipes found.</p>
+}
+else
+{
+    <ul>
+        @foreach (var recipe in recipes)
+        {
+            <li>@recipe.Name</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Recipe> recipes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        recipes = await Http.GetFromJsonAsync<List<Recipe>>("https://api.example.com/recipes");
+    }
+
+
+}
